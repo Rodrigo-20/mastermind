@@ -40,20 +40,22 @@ end
 
 class Code
     attr_accessor :code, :digits
-   def initialize 
+   def initialize (color_1,color_2,color_3,color_4)
     @code=[]
     @digits=[]
     4.times do
-        self.digits << Digit.new 
-    end     
-   end
+        self.digits << Digit.new
+    end
+    self.make_code(color_1,color_2,color_3,color_4)
 
-   def make_code (color_1,color_2,color_3,color_4)
-     
-        self.code << self.digits[0].colors[color_1]
-        self.code << self.digits[0].colors[color_2]
-        self.code << self.digits[0].colors[color_3]
-        self.code << self.digits[0].colors[color_4]
+   end
+   #$i=0
+   def make_code (*col)
+        col.each_with_index do |color,index | 
+            self.code << self.digits[index].colors[color]
+        end    
+       # self.code << self.digits[$i].colors[col]
+       #$i+=1
        
    end 
 
@@ -74,9 +76,33 @@ def check_code(code)
           end
         end
     end
-    puts result
+     result
 end          
 
-codigo = Code.new.make_code(0,1,2,3) 
+class CrackCode
+    attr_accessor :value, :solution
+    def initialize(result)
+       @value = self.value_code(result) 
+       @solution=[]
+    end    
+    def value_code(code_value)
+    code_value.reduce(0) do |value,char|
+         if char=="a"
+            value +=2
+         elsif char=="b"
+            value +=1    
+         else value+=0    
+         end
+         value
+        end         
+    end
+    def firs_step #search for the colors that arent in the code 
+    
+    end
 
-check_code(codigo)
+end
+
+codigo = Code.new(1,0,4,5).code
+codigo.map { |col| puts col.color[:name]}
+ 
+#puts crack_code(check_code(codigo))
